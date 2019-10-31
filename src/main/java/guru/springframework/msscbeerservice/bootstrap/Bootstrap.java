@@ -29,6 +29,7 @@ public class Bootstrap implements CommandLineRunner {
             for (Beer beer : beers) {
                 System.out.println("Beer: " + beer);
             }
+            System.out.println("Count of Beers: " +  repository.count());
         }
     }
 
