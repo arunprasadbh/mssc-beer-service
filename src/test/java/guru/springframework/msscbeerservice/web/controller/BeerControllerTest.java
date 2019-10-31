@@ -67,6 +67,7 @@ class BeerControllerTest {
                 .beerStyle(BeerStyle.LAGER)
                 .price(new BigDecimal("2.29"))
                 .upc(123123123L)
+                .quantityOnHand(20)
                 .build();
     }
 }
