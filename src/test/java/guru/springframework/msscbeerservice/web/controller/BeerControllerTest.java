@@ -2,6 +2,7 @@ package guru.springframework.msscbeerservice.web.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import guru.springframework.msscbeerservice.bootstrap.Bootstrap;
 import guru.springframework.msscbeerservice.service.BeerService;
 import guru.springframework.msscbeerservice.web.model.BeerDto;
 import guru.springframework.msscbeerservice.web.model.BeerStyle;
@@ -16,6 +17,8 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,6 +41,8 @@ class BeerControllerTest {
 
     @Test
     void getBeerById() throws Exception {
+        given(beerService.getBeerById(any())).willReturn(getValidBeerDto());
+
         mockMvc.perform(get("/api/v1/beer/" + UUID.randomUUID().toString()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -46,6 +51,8 @@ class BeerControllerTest {
     void saveNewBeer() throws Exception {
         BeerDto beerDto = getValidBeerDto();
         String jsonString = objectMapper.writeValueAsString(beerDto);
+
+        given(beerService.saveNewBeer(any())).willReturn(getValidBeerDto());
 
         mockMvc.perform(post("/api/v1/beer")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -59,6 +66,7 @@ class BeerControllerTest {
         UUID id = UUID.randomUUID();
         String jsonString = objectMapper.writeValueAsString(beerDto);
 
+        given(beerService.updateBeer(any(),any())).willReturn(getValidBeerDto());
         mockMvc.perform(put("/api/v1/beer/"+id.toString())
         .contentType(MediaType.APPLICATION_JSON)
         .content(jsonString))
@@ -71,7 +79,7 @@ class BeerControllerTest {
                 .beerName("Sample Beer")
                 .beerStyle(BeerStyle.LAGER)
                 .price(new BigDecimal("2.29"))
-                .upc(123123123L)
+                .upc(Bootstrap.BEER_1_UPC)
                 .quantityOnHand(20)
                 .build();
     }

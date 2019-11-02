@@ -18,6 +18,9 @@ import java.util.UUID;
 @Component
 public class Bootstrap implements CommandLineRunner {
 
+    public static final String BEER_1_UPC = "0631234200036";
+    public static final String BEER_2_UPC = "0631234300019";
+    public static final String BEER_3_UPC = "0083783375213";
     @Autowired
     BeerRepository repository;
 
@@ -36,9 +39,9 @@ public class Bootstrap implements CommandLineRunner {
     private void loadBeerObjects() {
         Beer beer1 = Beer.builder()
                 .id(UUID.randomUUID())
-                .beerName("Beer1")
+                .beerName("Heineken")
                 .beerStyle("LAGER")
-                .upc(123412341234L)
+                .upc(BEER_1_UPC)
                 .quantityOnHand(200)
                 .price(new BigDecimal("2.97"))
                 .build();
@@ -46,11 +49,20 @@ public class Bootstrap implements CommandLineRunner {
 
         Beer beer2 = Beer.builder()
                 .id(UUID.randomUUID())
-                .beerName("Beer2")
+                .beerName("Carona")
                 .beerStyle("ALE")
-                .upc(123123123123L)
+                .upc(BEER_2_UPC)
                 .price(new BigDecimal("12.95"))
                 .build();
         repository.save(beer2);
+
+        Beer beer3 = Beer.builder()
+                .id(UUID.randomUUID())
+                .beerName("Galaxy Cat")
+                .beerStyle("PALE_ALE")
+                .upc(BEER_3_UPC)
+                .price(new BigDecimal("11.95"))
+                .build();
+        repository.save(beer3);
     }
 }
