@@ -6,21 +6,22 @@ package guru.springframework.msscbeerservice.bootstrap;
 
 import guru.springframework.msscbeerservice.domain.Beer;
 import guru.springframework.msscbeerservice.repositories.BeerRepository;
-import guru.springframework.msscbeerservice.web.controller.BeerController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
-@Component
+//@Component
 public class Bootstrap implements CommandLineRunner {
 
     public static final String BEER_1_UPC = "0631234200036";
     public static final String BEER_2_UPC = "0631234300019";
     public static final String BEER_3_UPC = "0083783375213";
+    public static final UUID BEER_1_UUID = UUID.fromString("0a818933-087d-47f2-ad83-2f986ed087eb");
+    public static final UUID BEER_2_UUID = UUID.fromString("a712d914-61ea-4623-8bd0-32c0f6545bfd");
+    public static final UUID BEER_3_UUID = UUID.fromString("026cc3c8-3a0c-4083-a05b-e908048c1b08");
+
     @Autowired
     BeerRepository repository;
 
@@ -38,28 +39,32 @@ public class Bootstrap implements CommandLineRunner {
 
     private void loadBeerObjects() {
         Beer beer1 = Beer.builder()
-                .id(UUID.randomUUID())
+               // .id(BEER_1_UUID)
                 .beerName("Heineken")
                 .beerStyle("LAGER")
                 .upc(BEER_1_UPC)
-                .quantityOnHand(200)
+                .minOnHand(12)
+                .quantityToBrew(200)
                 .price(new BigDecimal("2.97"))
                 .build();
         repository.save(beer1);
 
         Beer beer2 = Beer.builder()
-                .id(UUID.randomUUID())
+               // .id(BEER_2_UUID)
                 .beerName("Carona")
                 .beerStyle("ALE")
+                .minOnHand(12)
                 .upc(BEER_2_UPC)
                 .price(new BigDecimal("12.95"))
                 .build();
         repository.save(beer2);
 
         Beer beer3 = Beer.builder()
-                .id(UUID.randomUUID())
+                //.id(BEER_3_UUID)
                 .beerName("Galaxy Cat")
                 .beerStyle("PALE_ALE")
+                .minOnHand(12)
+                //.quantityToBreew
                 .upc(BEER_3_UPC)
                 .price(new BigDecimal("11.95"))
                 .build();
