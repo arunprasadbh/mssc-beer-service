@@ -104,4 +104,15 @@ public class BeerServiceImpl implements BeerService {
         beers.stream().forEach(beer -> beerDtos.add(mapper.beerToBeerDto(beer)));
         return beerDtos;
     }
+
+    @Cacheable(cacheNames = "beerUpcCache", condition = "#enhanceInventory == false")
+    @Override
+    public BeerDto getBeerByUpc(String upc, Boolean enhanceInventory) {
+        if (enhanceInventory) {
+            return mapper.beerToBeerDto(beerRepository.findByUpc(upc).orElseThrow(NotFoundException::new));
+        }else{
+            return mapper.beerToBeerDtoNoEnhance(beerRepository.findByUpc(upc).orElseThrow(NotFoundException::new));
+        }
+
+    }
 }

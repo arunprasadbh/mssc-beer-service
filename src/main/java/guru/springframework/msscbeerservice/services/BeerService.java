@@ -21,4 +21,6 @@ public interface BeerService {
     BeerPagedList listBeers(String beerName, String beerStyle, PageRequest of, Boolean enhanceInventory);
 
     List<BeerDto> listAllBeers();
+
+    BeerDto getBeerByUpc(String upc, Boolean enhanceInventory);
 }

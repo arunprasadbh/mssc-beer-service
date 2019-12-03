@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/beer")
+@RequestMapping("/api/v1/")
 @RestController
 public class BeerController {
 
@@ -27,7 +27,7 @@ public class BeerController {
     private static final Integer DEFAULT_PAGE_NUMBER = 0;
     private static final Integer DEFAULT_PAGE_SIZE = 25;
 
-    @GetMapping(produces = {"application/json"})
+    @GetMapping(path = "beer", produces = {"application/json"})
     //@GetMapping("/all")
     public ResponseEntity<BeerPagedList> listBeers(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
                                                    @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -50,7 +50,7 @@ public class BeerController {
 
         return new ResponseEntity<>(beerPagedList, HttpStatus.OK);
     }
-    @GetMapping("/{beerId}")
+    @GetMapping(path ="beer/{beerId}")
     public ResponseEntity<BeerDto> getBeerById(@PathVariable("beerId") UUID beerId,
                                                @RequestParam(value = "enhanceInventory", required = false) Boolean enhanceInventory){
 
@@ -58,17 +58,25 @@ public class BeerController {
         return new ResponseEntity <>(beerService.getBeerById(beerId, enhanceInventory), HttpStatus.OK);
     }
 
-    @PostMapping
+    @GetMapping("beerUpc/{upc}")
+    public ResponseEntity<BeerDto> getBeerByUpc(@PathVariable("upc") String upc,
+                                                @RequestParam(value = "enhanceInventory", required = false) Boolean enhanceInventory) {
+        if(enhanceInventory == null){enhanceInventory = false;}
+
+        return new ResponseEntity<>(beerService.getBeerByUpc(upc, enhanceInventory), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "beer")
     public ResponseEntity saveNewBeer(@RequestBody @Validated BeerDto beerDto){
         return new ResponseEntity <>(beerService.saveNewBeer(beerDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{beerId}")
+    @PutMapping(path = "beer/{beerId}")
     public ResponseEntity updateBeer(@PathVariable("beerId") UUID beerId, @RequestBody @Validated BeerDto beerDto) {
         return new ResponseEntity <>(beerService.updateBeer(beerId, beerDto), HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/all")
+    @GetMapping(path ="beer/all")
     public ResponseEntity<List<BeerDto>> listAllBeers(){
 
         System.out.println("Check 1");
