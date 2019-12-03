@@ -11,6 +11,7 @@ import guru.springframework.msscbeerservice.web.mappers.BeerMapper;
 import guru.springframework.msscbeerservice.web.model.BeerDto;
 import guru.springframework.msscbeerservice.web.model.BeerPagedList;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,11 @@ public class BeerServiceImpl implements BeerService {
     private final BeerRepository beerRepository;
     private final BeerMapper mapper;
 
+    @Cacheable(cacheNames = "beerCache", condition = "#enhanceInventory == false", key = "#beerId")
     @Override
     public BeerDto getBeerById(UUID beerId, Boolean enhanceInventory) {
+       // System.out.println("GerBeerById method called");
+
         if (enhanceInventory) {
             return mapper.beerToBeerDto(beerRepository.findById(beerId).orElseThrow(NotFoundException::new));
         }else{
@@ -54,10 +58,13 @@ public class BeerServiceImpl implements BeerService {
         return mapper.beerToBeerDto(beerRepository.save(beer));
     }
 
+    @Cacheable(cacheNames = "beerListCache", condition = "#enhanceInventory == false")
+    @Override
     public BeerPagedList listBeers(String beerName, String beerStyle, PageRequest pageRequest, Boolean enhanceInventory) {
         BeerPagedList beerPagedList;
         Page<Beer> beerPage;
 
+        //System.out.println("ListBeers method called");
         if(!StringUtils.isEmpty(beerName) && ! StringUtils.isEmpty(beerStyle)){
             beerPage = beerRepository.findAllByBeerNameAndBeerStyle(beerName, beerStyle, pageRequest);
         } else if (!StringUtils.isEmpty(beerName) && StringUtils.isEmpty(beerStyle)) {
