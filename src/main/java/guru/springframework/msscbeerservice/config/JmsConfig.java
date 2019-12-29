@@ -14,7 +14,7 @@ import org.springframework.jms.support.converter.MessageType;
 @Configuration
 public class JmsConfig {
 
-    public final String orderQueue = "ORDER_QUEUE";
+    public final static String BREWING_REQUEST_QUEUE = "brewing-request";
 
     @Bean
     public MessageConverter messageConverter(){
