@@ -4,6 +4,7 @@ package guru.springframework.msscbeerservice.config;
  * Created by arunabhamidipati on 10/12/2019
  */
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,10 +20,11 @@ public class JmsConfig {
 
 
     @Bean
-    public MessageConverter messageConverter(){
+    public MessageConverter messageConverter(ObjectMapper objectMapper){
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         converter.setTargetType(MessageType.TEXT);
         converter.setTypeIdPropertyName("_type");
+        converter.setObjectMapper(objectMapper);
         return converter;
     }
 
