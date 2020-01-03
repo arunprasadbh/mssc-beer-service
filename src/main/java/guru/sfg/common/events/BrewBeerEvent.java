@@ -1,4 +1,4 @@
-package guru.springframework.msscbeerservice.events;
+package guru.sfg.common.events;
 
 /*
  * Created by arunabhamidipati on 29/12/2019
